@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cardápio da Lulu</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background: linear-gradient(to bottom, #ffe6f0, #ffd6ec);
+      padding: 20px;
+      margin: 0;
+      color: #d63384;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ff4da6;
+      animation: pulse 2s infinite alternate;
+    }
+
+    .semana {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .dia {
+      background: #fff0f5;
+      border: 3px dashed #ffb6c1;
+      border-radius: 20px;
+      padding: 20px;
+      width: 300px;
+      box-shadow: 0 4px 12px rgba(255, 182, 193, 0.4);
+      transition: transform 0.3s;
+    }
+
+    .dia:hover {
+      transform: scale(1.03);
+    }
+
+    h2 {
+      text-align: center;
+      color: #ff3399;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+      color: #cc1177;
+    }
+
+    textarea {
+      width: 100%;
+      border: 2px solid #ffa6c9;
+      border-radius: 10px;
+      padding: 8px;
+      resize: none;
+      background-color: #fff8fb;
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    textarea:focus {
+      border-color: #ff66a3;
+      outline: none;
+    }
+
+    .botao-salvar {
+      display: block;
+      margin: 30px auto 0;
+      background-color: #ff66a3;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 102, 163, 0.4);
+      transition: background-color 0.3s;
+    }
+
+    .botao-salvar:hover {
+      background-color: #ff3385;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.03); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🍓 Cardápio da Lulu 🍓</h1>
+
+  <div class="semana" id="semana">
+    <!-- Dias serão inseridos via JavaScript -->
+  </div>
+
+  <button class="botao-salvar" onclick="salvarCardapio()">💾 Salvar Cardápio</button>
+
+  <script>
+    const dias = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"];
+    const refeicoes = [
+      { emoji: "☀️", nome: "Café da Manhã" },
+      { emoji: "🍽️", nome: "Almoço" },
+      { emoji: "🍪", nome: "Lanche da Tarde" },
+      { emoji: "🌙", nome: "Janta" }
+    ];
+
+    const semanaDiv = document.getElementById('semana');
+
+    dias.forEach(dia => {
+      const diaDiv = document.createElement('div');
+      diaDiv.className = "dia";
+      diaDiv.innerHTML = `<h2>${dia}-feira</h2>`;
+      
+      refeicoes.forEach(ref => {
+        const id = `${dia}_${ref.nome}`.replace(/\s/g, '_');
+        const valorSalvo = localStorage.getItem(id) || "";
+
+        diaDiv.innerHTML += `
+          <label>${ref.emoji} ${ref.nome}</label>
+          <textarea id="${id}" rows="2">${valorSalvo}</textarea>
+        `;
+      });
+
+      semanaDiv.appendChild(diaDiv);
+    });
+
+    function salvarCardapio() {
+      dias.forEach(dia => {
+        refeicoes.forEach(ref => {
+          const id = `${dia}_${ref.nome}`.replace(/\s/g, '_');
+          const valor = document.getElementById(id).value;
+          localStorage.setItem(id, valor);
+        });
+      });
+      alert("Cardápio salvo com sucesso! 💖");
+    }
+  </script>
+
+</body>
+</html>
